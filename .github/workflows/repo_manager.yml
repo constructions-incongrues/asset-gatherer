@@ -1,4 +1,4 @@
-name: Run Repo Manager
+name: repo-manager
 on: [workflow_dispatch]
 jobs:
   repo-manager:
