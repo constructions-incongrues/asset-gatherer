@@ -230,3 +230,47 @@ C4Component
     Rel(ruleEngine, httpRequest, "Évalue les règles basées sur")
     Rel(assetCollector, httpRequest, "Accède aux informations de la requête")
 ```
+
+## Utilisation du Dev Container
+
+Le projet inclut une configuration de Dev Container pour fournir un environnement de développement reproductible et préconfiguré, idéal pour la collaboration et le développement en environnement isolé. Le Dev Container utilise Docker pour configurer une image avec PHP, Composer, et d'autres dépendances nécessaires pour travailler avec le package `AssetGatherer`.
+
+### Prérequis
+
+- **Docker** : Assurez-vous que Docker est installé et en cours d'exécution.
+- **Visual Studio Code** : Utilisez l'extension "Remote - Containers" pour ouvrir et gérer le Dev Container.
+
+### Démarrage du Dev Container
+
+1. **Ouvrez le projet dans Visual Studio Code** : Assurez-vous que le dossier racine du projet est ouvert dans l'éditeur.
+2. **Ouvrez le Dev Container** : Appuyez sur `F1`, tapez `Remote-Containers: Reopen in Container`, et sélectionnez cette option. VS Code va alors :
+   - Construire l'image Docker définie dans `.devcontainer/Dockerfile`.
+   - Démarrer le conteneur avec les outils et extensions configurés.
+3. **Installez les dépendances** : Une fois le Dev Container démarré, les dépendances sont installées automatiquement via le `postCreateCommand` défini dans `.devcontainer/devcontainer.json`.
+
+### Outils et Extensions Disponibles
+
+Dans le Dev Container, les outils suivants sont préinstallés :
+
+- **PHP** : Environnement PHP avec la version définie dans le Dockerfile.
+- **Composer** : Gestionnaire de dépendances PHP.
+- **PHPUnit** : Outil de test pour exécuter des tests unitaires.
+
+### Exécution des Commandes dans le Dev Container
+
+Une fois le Dev Container démarré, vous pouvez utiliser le terminal intégré de VS Code pour exécuter des commandes :
+
+- **Exécuter les tests PHPUnit** : `phpunit`
+- **Installer les dépendances Composer** : `composer install`
+
+### Personnalisation
+
+La configuration du Dev Container peut être personnalisée dans les fichiers `.devcontainer/devcontainer.json` et `.devcontainer/Dockerfile`. Par exemple, vous pouvez ajouter des dépendances supplémentaires, configurer des scripts supplémentaires dans `postCreateCommand`, ou installer d'autres extensions Visual Studio Code.
+
+### Avantages du Dev Container
+
+- **Environnement Reproductible** : Les configurations, dépendances, et outils sont identiques pour tous les développeurs travaillant sur le projet.
+- **Isolation** : Le Dev Container fonctionne de manière isolée, ce qui évite les conflits de dépendances avec le système local.
+- **Facilité de Configuration** : Tout est défini dans le projet, donc aucune configuration manuelle supplémentaire n'est nécessaire pour les nouveaux contributeurs.
+
+Pour plus de détails sur les Dev Containers, consultez la [documentation officielle de Visual Studio Code](https://code.visualstudio.com/docs/remote/containers).
