@@ -6,25 +6,98 @@ repository:
   homepage: https://github.com/constructions-incongrues/asset-gatherer
   topics:
     - composer-package
-  visibility: public
-  has_issues: true # same
-  has_projects: false
-  has_wiki: galse
-  has_discussions: false
-  is_template: false
-  default_branch: main
-  allow_squash_merge: true
-  allow_merge_commit: false
-  allow_rebase_merge: false
-  allow_auto_merge: true
-  delete_branch_on_merge: true
-  allow_update_branch: true
 
-branches:
+# Which method you choose is up to you. See README.md for more info and example
+# Workflows to implement these strategies.
+settings:
+  # See https://docs.github.com/en/rest/reference/repos#update-a-repository for all available settings.
+  # any of these settings can be ommitted to just leave the repo's current setting
+  # If a setting has a value in settings.yml, it will always overwrite what exists in the repo.
+
+  # A short description of the repository that will show up on GitHub. Set to an empty string to clear.
+  description: A PHP package to gather assets based on HTTP request rules and configuration in YAML
+
+  # A URL with more information about the repository. Set to an empty string to clear.
+  homepage: https://github.com/constructions-incongrues/asset-gatherer
+
+  # A list of strings to apply as topics on the repo. Set to an empty list to clear topics. Omit or set to null to leave what repo already has
+  topics:
+    - composer-package
+
+  # Either `true` to make the repository private, or `false` to make it public.
+  private: false
+
+  # Either `true` to enable issues for this repository, `false` to disable them.
+  has_issues: true
+
+  # Either `true` to enable projects for this repository, or `false` to disable them.
+  # If projects are disabled for the organization, passing `true` will cause an API error.
+  has_projects: false
+
+  # Either `true` to enable the wiki for this repository, `false` to disable it.
+  has_wiki: false
+
+  # Either `true` to enable downloads for this repository, `false` to disable them.
+  has_downloads: false
+
+  # Set the default branch for this repository.
+  default_branch: main
+
+  # Either `true` to allow squash-merging pull requests, or `false` to prevent
+  # squash-merging.
+  allow_squash_merge: true
+
+  # Either `true` to allow merging pull requests with a merge commit, or `false`
+  # to prevent merging pull requests with merge commits.
+  allow_merge_commit: false
+
+  # Either `true` to allow rebase-merging pull requests, or `false` to prevent
+  # rebase-merging.
+  allow_rebase_merge: false
+
+  # Either `true` to enable automatic deletion of branches on merge, or `false` to disable
+  delete_branch_on_merge: true
+
+  # Either `true` to enable automated security fixes, or `false` to disable
+  # automated security fixes.
+  enable_automated_security_fixes: true
+
+  # Either `true` to enable vulnerability alerts, or `false` to disable
+  # vulnerability alerts.
+  enable_vulnerability_alerts: true
+
+branch_protections:
+  # branch protection can only be created for branches that exist.
   - name: main
-    protection: # null to delete this branch's protection rule
-      required_pull_request_reviews: ~ # null to disable
-      required_status_checks: ~ # null to disable
+    # Set exists to false to delete branch protection
+    exists: true
+    # https://docs.github.com/en/rest/reference/repos#update-branch-protection
+    # Branch Protection settings. Leave a value out to leave set at current repo settings
+    protection:
+      # Require at least one approving review on a pull request, before merging. Set to null to disable.
+      pr_options: ~
+      # Require status checks to pass before merging. Set to null to disable
+      # required_status_checks:
+      #   # Require branches to be up to date before merging.
+      #   strict: true
+      #   # The list of status checks to require in order to merge into this branch
+      # checks:
+      #   - lint
+      #   - test
+      #   - docker
+      # Blocks merge until all conversations on a pull request have been resolved
+      # require_conversation_resolution: true
+      # Enforce all configured restrictions for administrators. Set to true to enforce required status checks for repository administrators. Set to null to disable.
       enforce_admins: true
-      restrictions: null
-      required_linear_history: true
+      # Prevent merge commits from being pushed to matching branches
+      require_linear_history: true
+      # Permit force pushes for all users with push access.
+      allow_force_pushes: true
+      # Allow users with push access to delete matching branches.
+      allow_deletions: false
+      # If set to true, the restrictions branch protection settings which limits who can push will also block pushes which create new branches, unless the push is initiated by a user, team, or app which has the ability to push. Set to true to restrict new branch creation.
+      block_creations: true
+      # Restrict who can push to this branch. Team and user restrictions are only available for organization-owned repositories. Set to null to disable.
+      restrictions:
+        users: [trivoallan]
+        teams: []
