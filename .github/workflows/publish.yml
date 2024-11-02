@@ -1,0 +1,23 @@
+name: publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  packagist:
+    name: Publish Package to Packagist
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Trigger Packagist Update
+        env:
+          PACKAGIST_USERNAME: ${{ secrets.PACKAGIST_USERNAME }}
+          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+        run: |
+          curl -X POST https://packagist.org/api/update-package?username=${PACKAGIST_USERNAME}&apiToken=${PACKAGIST_TOKEN} \
+          -H "Content-Type: application/json" \
+          -d "{\"repository\":{\"url\":\"${{ github.event.repository.clone_url }}\"}}"
