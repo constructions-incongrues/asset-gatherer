@@ -15,6 +15,7 @@ Le package `AssetGatherer` permet de collecter des ressources (images, CSS, Java
   - [Exemple Complet](#exemple-complet)
 - [Exécution des Tests](#exécution-des-tests)
 - [Diagrammes C4](#diagrammes-c4)
+- [Utilisation du Dev Container](#utilisation-du-dev-container)
 
 ## Installation
 
