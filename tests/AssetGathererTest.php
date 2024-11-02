@@ -11,7 +11,7 @@ class AssetGathererTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->baseDirectory = __DIR__ . '/assets'; // Définir un répertoire de base pour les tests
+        $this->baseDirectory = __DIR__ . '/bundles'; // Définir un répertoire de base pour les tests
         mkdir($this->baseDirectory . '/homepage/images', 0777, true);
         file_put_contents($this->baseDirectory . '/homepage/images/test.jpg', 'image content');
 

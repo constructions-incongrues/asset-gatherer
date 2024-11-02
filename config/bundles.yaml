@@ -1,16 +1,16 @@
 homepage:
   images:
-    directories: [tests/bundles/homepage/images]
+    directories: [homepage/images]
     extensions: [jpg, png]
   css:
-    directories: [tests/bundles/homepage/css]
+    directories: [homepage/css]
     extensions: [css]
   rules:
     pathContains: /homepage
 
 dashboard:
   javascript:
-    directories: [tests/bundles/dashboard/js]
+    directories: [dashboard/js]
     extensions: [js]
   rules:
     query:
