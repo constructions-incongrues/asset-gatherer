@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/constructions-incongrues/asset-gatherer/compare/v0.2.0...v0.3.0) (2024-11-02)
+
+
+### Features
+
+* configurable base directory for bundles ([#26](https://github.com/constructions-incongrues/asset-gatherer/issues/26)) ([caeca6c](https://github.com/constructions-incongrues/asset-gatherer/commit/caeca6c7a4c8fe6611521d561fe1fe47789b8992))
+
 ## [0.2.0](https://github.com/constructions-incongrues/asset-gatherer/compare/v0.1.0...v0.2.0) (2024-11-02)
 
 
