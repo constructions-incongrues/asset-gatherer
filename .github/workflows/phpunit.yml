@@ -22,7 +22,7 @@ jobs:
           php-version: '7.4'  # Specify the PHP version you want to use
 
       - name: Install Composer dependencies
-        run: cd AssetGatherer && composer install --no-progress --no-suggest --prefer-dist
+        run: composer install --no-progress --no-suggest --prefer-dist
 
       - name: Run PHPUnit tests
-        run: cd AssetGatherer && vendor/bin/phpunit ./tests/
+        run: vendor/bin/phpunit ./tests/

@@ -6,6 +6,6 @@
         "VARIANT": "7.4" // Adjust PHP version as needed
       }
     },
-    "postCreateCommand": "cd AssetGatherer && composer install",
+    "postCreateCommand": "composer install",
     "remoteUser": "vscode"
   }
