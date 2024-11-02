@@ -1,3 +1,7 @@
 {
-  "recommendations": ["trunk.io", "ms-vscode-remote.remote-containers"]
+  "recommendations": [
+    "trunk.io",
+    "ms-vscode-remote.remote-containers",
+    "vivaxy.vscode-conventional-commits"
+  ]
 }

@@ -1,0 +1,17 @@
+homepage:
+  images:
+    directories: [path/to/homepage/images]
+    extensions: [jpg, png]
+  css:
+    directories: [path/to/homepage/css]
+    extensions: [css]
+  rules:
+    pathContains: /homepage
+
+dashboard:
+  javascript:
+    directories: [path/to/dashboard/js]
+    extensions: [js]
+  rules:
+    query:
+      admin: true

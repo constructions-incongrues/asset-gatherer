@@ -6,16 +6,13 @@ Le package `AssetGatherer` permet de collecter des ressources (images, CSS, Java
 
 - [Installation](#installation)
 - [Configuration](#configuration)
-  - [Structure du Fichier YAML](#structure-du-fichier-yaml)
-- [Utilisation](#utilisation)
-  - [Chargement de la Configuration](#chargement-de-la-configuration)
-  - [Collecte des Ressources](#collecte-des-ressources)
-  - [Récupération des Ressources Collectées](#récupération-des-ressources-collectées)
-- [Exemples](#exemples)
-  - [Exemple Complet](#exemple-complet)
-- [Exécution des Tests](#exécution-des-tests)
 - [Diagrammes C4](#diagrammes-c4)
+  - [Diagramme de Contexte](#diagramme-de-contexte)
+  - [Diagramme de Conteneur](#diagramme-de-conteneur)
+  - [Diagramme de Composant](#diagramme-de-composant)
+- [Utilisation avec PSR-7](#utilisation-avec-psr-7)
 - [Utilisation du Dev Container](#utilisation-du-dev-container)
+- [Exécution des Tests](#exécution-des-tests)
 
 ## Installation
 
@@ -35,8 +32,6 @@ Le package `AssetGatherer` permet de collecter des ressources (images, CSS, Java
 La configuration du package `AssetGatherer` se fait via un fichier YAML. Chaque _bundle_ peut définir des répertoires et types de fichiers spécifiques, ainsi que des règles conditionnelles en fonction de la requête HTTP (URL, headers, paramètres de requête).
 
 ### Structure du Fichier YAML
-
-Un fichier YAML typique se présente comme suit. Il se nomme généralement `bundles.yaml` et se trouve dans le dossier `config` :
 
 ```yaml
 # config/bundles.yaml
@@ -58,115 +53,6 @@ dashboard:
     query:
       admin: "true"
 ```
-
-Dans cet exemple :
-
-- **`homepage`** est un bundle qui inclut des images et du CSS. Ce bundle est chargé si le chemin de la requête contient `/homepage`.
-- **`dashboard`** est un bundle qui inclut du JavaScript. Ce bundle est chargé uniquement si le paramètre de requête `admin` est défini sur `true`.
-
-### Exemple de Règle de Bundle avec Plusieurs Paramètres de la Query
-
-Voici un exemple de configuration d'un _bundle_ utilisant plusieurs paramètres de la `query`. Ce _bundle_ ne se charge que si plusieurs conditions basées sur les paramètres de la requête sont satisfaites.
-
-Ajoutez cet exemple à la section **Structure du Fichier YAML** dans la documentation.
-
-````yaml
-# config/bundles.yaml
-admin_dashboard:
-  javascript:
-    directories: ['path/to/admin_dashboard/js']
-    extensions: ['js']
-  css:
-    directories: ['path/to/admin_dashboard/css']
-    extensions: ['css']
-  rules:
-    query:
-      admin: 'true'
-      view: 'dashboard'
-
-## Utilisation
-
-### Chargement de la Configuration
-
-Chargez la configuration du fichier YAML :
-
-```php
-$assetGatherer = new AssetGatherer();
-$assetGatherer->loadConfiguration('config/bundles.yaml');
-````
-
-### Collecte des Ressources
-
-Pour collecter les ressources en fonction d'une requête HTTP, fournissez les données de la requête sous forme de tableau :
-
-```php
-$request = [
-    'path' => '/homepage',
-    'headers' => [
-        'User-Agent' => 'Chrome',
-        'Accept' => 'text/html'
-    ],
-    'query' => []
-];
-
-$assetGatherer->gatherAssetsForRequest($request);
-```
-
-### Récupération des Ressources Collectées
-
-Une fois les ressources collectées, vous pouvez les récupérer avec la méthode `getAssets()`. Cette méthode permet de récupérer toutes les ressources ou uniquement celles d'un bundle spécifique.
-
-```php
-// Récupérer toutes les ressources collectées
-$allAssets = $assetGatherer->getAssets();
-
-// Récupérer uniquement les ressources du bundle 'homepage'
-$homepageAssets = $assetGatherer->getAssets('homepage');
-```
-
-## Exemples
-
-### Exemple Complet
-
-Voici un exemple complet qui comprend le chargement de la configuration, la collecte de ressources pour une requête, et la récupération des ressources collectées.
-
-```php
-// Instanciez AssetGatherer et chargez la configuration
-$assetGatherer = new AssetGatherer();
-$assetGatherer->loadConfiguration('config/bundles.yaml');
-
-// Simulez une requête HTTP
-$request = [
-    'path' => '/homepage',
-    'headers' => [
-        'User-Agent' => 'Chrome',
-        'Accept' => 'text/html'
-    ],
-    'query' => []
-];
-
-// Collectez les ressources en fonction de la requête
-$assetGatherer->gatherAssetsForRequest($request);
-
-// Récupérez et affichez les ressources collectées
-$assets = $assetGatherer->getAssets();
-print_r($assets);
-```
-
-Avec cette configuration, les ressources sous `path/to/homepage/images` et `path/to/homepage/css` seront collectées si le chemin contient `/homepage`.
-
-## Exécution des Tests
-
-Des tests sont inclus pour vérifier que `AssetGatherer` fonctionne correctement.
-
-1. **Configurez les répertoires et fichiers d'exemples** comme indiqué dans la documentation de test.
-
-2. **Exécutez les tests** avec PHPUnit :
-   ```bash
-   vendor/bin/phpunit tests/AssetGathererTest.php
-   ```
-
-Pour plus d'informations sur PHPUnit, consultez la [documentation PHPUnit](https://phpunit.de/).
 
 ## Diagrammes C4
 
@@ -234,11 +120,81 @@ C4Component
     Rel(assetCollector, httpRequest, "Accède aux informations de la requête")
 ```
 
+## Utilisation avec PSR-7
+
+Le package `AssetGatherer` utilise maintenant PSR-7 pour représenter les requêtes HTTP. Cela permet d'utiliser n'importe quelle implémentation compatible avec PSR-7, comme `nyholm/psr7` ou `guzzlehttp/psr7`.
+
+### Prérequis
+
+Assurez-vous d'avoir une implémentation PSR-7 installée dans votre projet, par exemple :
+
+```bash
+composer require nyholm/psr7
+```
+
+### Chargement de la Configuration
+
+```php
+$assetGatherer = new AssetGatherer();
+$assetGatherer->loadConfiguration('config/bundles.yaml');
+```
+
+### Création d'une Requête HTTP avec PSR-7
+
+Pour collecter les ressources en fonction d'une requête HTTP, créez une instance de `ServerRequestInterface`.
+
+```php
+use Nyholm\Psr7\ServerRequest;
+
+$request = new ServerRequest('GET', '/homepage', [
+    'User-Agent' => 'Chrome',
+    'Accept' => 'text/html'
+]);
+```
+
+### Collecte des Ressources
+
+```php
+$assetGatherer->gatherAssetsForRequest($request);
+```
+
+### Récupération des Ressources Collectées
+
+```php
+$allAssets = $assetGatherer->getAssets();
+$homepageAssets = $assetGatherer->getAssets('homepage');
+```
+
+### Exemple Complet
+
+```php
+use AssetGatherer\AssetGatherer;
+use Nyholm\Psr7\ServerRequest;
+
+$assetGatherer = new AssetGatherer();
+$assetGatherer->loadConfiguration('config/bundles.yaml');
+
+$request = new ServerRequest('GET', '/homepage', [
+    'User-Agent' => 'Chrome',
+    'Accept' => 'text/html'
+]);
+
+$assetGatherer->gatherAssetsForRequest($request);
+$assets = $assetGatherer->getAssets();
+print_r($assets);
+```
+
+## Exécution des Tests
+
+```bash
+vendor/bin/phpunit tests/AssetGathererTest.php
+```
+
 ## Utilisation du Dev Container
 
 Le projet inclut une configuration de Dev Container pour fournir un environnement de développement reproductible et préconfiguré, idéal pour la collaboration et le développement en environnement isolé. Le Dev Container utilise Docker pour configurer une image avec PHP, Composer, et d'autres dépendances nécessaires pour travailler avec le package `AssetGatherer`.
 
-### Prérequis
+### Avant de commencer
 
 - **Docker** : Assurez-vous que Docker est installé et en cours d'exécution.
 - **Visual Studio Code** : Utilisez l'extension "Remote - Containers" pour ouvrir et gérer le Dev Container.
