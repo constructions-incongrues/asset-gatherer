@@ -1,0 +1,30 @@
+# .github/settings.yml
+
+repository:
+  name: asset-gatherer
+  description: A PHP package to gather assets based on HTTP request rules and configuration in YAML
+  homepage: https://github.com/constructions-incongrues/asset-gatherer
+  topics:
+    - composer-package
+  visibility: public
+  has_issues: true # same
+  has_projects: false
+  has_wiki: galse
+  has_discussions: false
+  is_template: false
+  default_branch: main
+  allow_squash_merge: true
+  allow_merge_commit: false
+  allow_rebase_merge: false
+  allow_auto_merge: true
+  delete_branch_on_merge: true
+  allow_update_branch: true
+
+branches:
+  - name: main
+    protection: # null to delete this branch's protection rule
+      required_pull_request_reviews: ~ # null to disable
+      required_status_checks: ~ # null to disable
+      enforce_admins: true
+      restrictions: null
+      required_linear_history: true

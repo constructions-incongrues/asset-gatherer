@@ -1,0 +1,25 @@
+# .github/workflows/apply-repo-settings.yml
+
+name: Apply Repo Settings
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/settings.yml
+  schedule:
+    - cron: '0 0 * * *' # daily
+  workflow_dispatch:
+
+jobs:
+  update-settings:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/mooseburgr/repository-settings-action
+      - name: Apply Repo Settings
+        uses: mooseburgr/repository-settings-action@v1
+        with:
+          token: ${{ secrets.GH_PAT }}
+          # optionally override the default settings file path
+          settings-path: .github/settings.yml
