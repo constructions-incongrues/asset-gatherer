@@ -1,0 +1,20 @@
+name: Run Repo Manager
+on: [workflow_dispatch]
+jobs:
+  repo-manager:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.6
+
+    - name: Run RepoManager
+      # you should always reference a version tag to ensure that your use of an action never changes until you update it
+      uses: actuarysailor/gha-repo-manager@v2.2.3
+      with:
+        # Apply your settings to the repo, can also be check to just check repo settings vs your file or validate, to validate your
+        # file is valid
+        action: apply
+        settings_file: .github/settings.yml
+        # need a PAT that can edit repo settings
+        # note, some settings may require additional permissions; see comments in examples/settings.yml for details
+        token: ${{ secrets.GITHUB_PAT }}
