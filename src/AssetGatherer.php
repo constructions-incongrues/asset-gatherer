@@ -8,8 +8,14 @@ use Exception;
 
 class AssetGatherer
 {
-    private $bundles = [];
-    private $gatheredAssets = [];
+    private array $bundles = [];
+    private array $gatheredAssets = [];
+    private string $baseDirectory = '';
+
+    public function __construct(string $baseDirectory = '')
+    {
+        $this->baseDirectory = rtrim($baseDirectory, '/');
+    }
 
     public function loadConfiguration(string $yamlFilePath): void
     {
@@ -29,8 +35,10 @@ class AssetGatherer
                 foreach ($config as $type => $typeConfig) {
                     if ($type !== 'rules') {
                         foreach ($typeConfig['directories'] as $directory) {
-                            if (is_dir($directory)) {
-                                $this->scanDirectory($directory, $typeConfig['extensions'], $bundleName, $type);
+                            // Préfixe le répertoire par `baseDirectory` si défini
+                            $fullDirectoryPath = $this->baseDirectory ? $this->baseDirectory . '/' . $directory : $directory;
+                            if (is_dir($fullDirectoryPath)) {
+                                $this->scanDirectory($fullDirectoryPath, $typeConfig['extensions'], $bundleName, $type);
                             }
                         }
                     }
@@ -74,6 +82,7 @@ class AssetGatherer
     {
         $directoryIterator = new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS);
         $iterator = new \RecursiveIteratorIterator($directoryIterator);
+
         foreach ($iterator as $file) {
             if (in_array($file->getExtension(), $extensions, true)) {
                 if (!isset($this->gatheredAssets[$bundleName][$type])) {
