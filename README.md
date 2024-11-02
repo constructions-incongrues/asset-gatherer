@@ -1,6 +1,6 @@
 # AssetGatherer Documentation
 
-Le package `AssetGatherer` permet de collecter des ressources (images, CSS, JavaScript, etc.) en fonction de règles définies pour chaque requête HTTP. Ces règles sont configurées dans un fichier YAML. Les ressources sont organisées en groupes appelés *bundles*, qui peuvent regrouper des fichiers de différents types selon les sections de l'application.
+Le package `AssetGatherer` permet de collecter des ressources (images, CSS, JavaScript, etc.) en fonction de règles définies pour chaque requête HTTP. Ces règles sont configurées dans un fichier YAML. Les ressources sont organisées en groupes appelés _bundles_, qui peuvent regrouper des fichiers de différents types selon les sections de l'application.
 
 ## Table des Matières
 
@@ -15,10 +15,12 @@ Le package `AssetGatherer` permet de collecter des ressources (images, CSS, Java
   - [Exemple Complet](#exemple-complet)
 - [Exécution des Tests](#exécution-des-tests)
 - [Diagrammes C4](#diagrammes-c4)
+- [Utilisation du Dev Container](#utilisation-du-dev-container)
 
 ## Installation
 
 1. **Installer le composant YAML de Symfony** pour pouvoir lire les configurations YAML :
+
    ```bash
    composer require symfony/yaml
    ```
@@ -30,7 +32,7 @@ Le package `AssetGatherer` permet de collecter des ressources (images, CSS, Java
 
 ## Configuration
 
-La configuration du package `AssetGatherer` se fait via un fichier YAML. Chaque *bundle* peut définir des répertoires et types de fichiers spécifiques, ainsi que des règles conditionnelles en fonction de la requête HTTP (URL, headers, paramètres de requête).
+La configuration du package `AssetGatherer` se fait via un fichier YAML. Chaque _bundle_ peut définir des répertoires et types de fichiers spécifiques, ainsi que des règles conditionnelles en fonction de la requête HTTP (URL, headers, paramètres de requête).
 
 ### Structure du Fichier YAML
 
@@ -40,34 +42,35 @@ Un fichier YAML typique se présente comme suit. Il se nomme généralement `bun
 # config/bundles.yaml
 homepage:
   images:
-    directories: ['path/to/homepage/images']
-    extensions: ['jpg', 'png']
+    directories: ["path/to/homepage/images"]
+    extensions: ["jpg", "png"]
   css:
-    directories: ['path/to/homepage/css']
-    extensions: ['css']
+    directories: ["path/to/homepage/css"]
+    extensions: ["css"]
   rules:
-    pathContains: '/homepage'
+    pathContains: "/homepage"
 
 dashboard:
   javascript:
-    directories: ['path/to/dashboard/js']
-    extensions: ['js']
+    directories: ["path/to/dashboard/js"]
+    extensions: ["js"]
   rules:
     query:
-      admin: 'true'
+      admin: "true"
 ```
 
 Dans cet exemple :
+
 - **`homepage`** est un bundle qui inclut des images et du CSS. Ce bundle est chargé si le chemin de la requête contient `/homepage`.
 - **`dashboard`** est un bundle qui inclut du JavaScript. Ce bundle est chargé uniquement si le paramètre de requête `admin` est défini sur `true`.
 
 ### Exemple de Règle de Bundle avec Plusieurs Paramètres de la Query
 
-Voici un exemple de configuration d'un *bundle* utilisant plusieurs paramètres de la `query`. Ce *bundle* ne se charge que si plusieurs conditions basées sur les paramètres de la requête sont satisfaites.
+Voici un exemple de configuration d'un _bundle_ utilisant plusieurs paramètres de la `query`. Ce _bundle_ ne se charge que si plusieurs conditions basées sur les paramètres de la requête sont satisfaites.
 
 Ajoutez cet exemple à la section **Structure du Fichier YAML** dans la documentation.
 
-```yaml
+````yaml
 # config/bundles.yaml
 admin_dashboard:
   javascript:
@@ -90,7 +93,7 @@ Chargez la configuration du fichier YAML :
 ```php
 $assetGatherer = new AssetGatherer();
 $assetGatherer->loadConfiguration('config/bundles.yaml');
-```
+````
 
 ### Collecte des Ressources
 
@@ -230,3 +233,47 @@ C4Component
     Rel(ruleEngine, httpRequest, "Évalue les règles basées sur")
     Rel(assetCollector, httpRequest, "Accède aux informations de la requête")
 ```
+
+## Utilisation du Dev Container
+
+Le projet inclut une configuration de Dev Container pour fournir un environnement de développement reproductible et préconfiguré, idéal pour la collaboration et le développement en environnement isolé. Le Dev Container utilise Docker pour configurer une image avec PHP, Composer, et d'autres dépendances nécessaires pour travailler avec le package `AssetGatherer`.
+
+### Prérequis
+
+- **Docker** : Assurez-vous que Docker est installé et en cours d'exécution.
+- **Visual Studio Code** : Utilisez l'extension "Remote - Containers" pour ouvrir et gérer le Dev Container.
+
+### Démarrage du Dev Container
+
+1. **Ouvrez le projet dans Visual Studio Code** : Assurez-vous que le dossier racine du projet est ouvert dans l'éditeur.
+2. **Ouvrez le Dev Container** : Appuyez sur `F1`, tapez `Remote-Containers: Reopen in Container`, et sélectionnez cette option. VS Code va alors :
+   - Construire l'image Docker définie dans `.devcontainer/Dockerfile`.
+   - Démarrer le conteneur avec les outils et extensions configurés.
+3. **Installez les dépendances** : Une fois le Dev Container démarré, les dépendances sont installées automatiquement via le `postCreateCommand` défini dans `.devcontainer/devcontainer.json`.
+
+### Outils et Extensions Disponibles
+
+Dans le Dev Container, les outils suivants sont préinstallés :
+
+- **PHP** : Environnement PHP avec la version définie dans le Dockerfile.
+- **Composer** : Gestionnaire de dépendances PHP.
+- **PHPUnit** : Outil de test pour exécuter des tests unitaires.
+
+### Exécution des Commandes dans le Dev Container
+
+Une fois le Dev Container démarré, vous pouvez utiliser le terminal intégré de VS Code pour exécuter des commandes :
+
+- **Exécuter les tests PHPUnit** : `phpunit`
+- **Installer les dépendances Composer** : `composer install`
+
+### Personnalisation
+
+La configuration du Dev Container peut être personnalisée dans les fichiers `.devcontainer/devcontainer.json` et `.devcontainer/Dockerfile`. Par exemple, vous pouvez ajouter des dépendances supplémentaires, configurer des scripts supplémentaires dans `postCreateCommand`, ou installer d'autres extensions Visual Studio Code.
+
+### Avantages du Dev Container
+
+- **Environnement Reproductible** : Les configurations, dépendances, et outils sont identiques pour tous les développeurs travaillant sur le projet.
+- **Isolation** : Le Dev Container fonctionne de manière isolée, ce qui évite les conflits de dépendances avec le système local.
+- **Facilité de Configuration** : Tout est défini dans le projet, donc aucune configuration manuelle supplémentaire n'est nécessaire pour les nouveaux contributeurs.
+
+Pour plus de détails sur les Dev Containers, consultez la [documentation officielle de Visual Studio Code](https://code.visualstudio.com/docs/remote/containers).
