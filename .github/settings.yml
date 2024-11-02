@@ -77,14 +77,12 @@ branch_protections:
       # Require at least one approving review on a pull request, before merging. Set to null to disable.
       pr_options: ~
       # Require status checks to pass before merging. Set to null to disable
-      # required_status_checks:
-      #   # Require branches to be up to date before merging.
-      #   strict: true
-      #   # The list of status checks to require in order to merge into this branch
-      # checks:
-      #   - lint
-      #   - test
-      #   - docker
+      required_status_checks:
+        # Require branches to be up to date before merging.
+        strict: true
+        # The list of status checks to require in order to merge into this branch
+      checks:
+        - phpunit
       # Blocks merge until all conversations on a pull request have been resolved
       # require_conversation_resolution: true
       # Enforce all configured restrictions for administrators. Set to true to enforce required status checks for repository administrators. Set to null to disable.
