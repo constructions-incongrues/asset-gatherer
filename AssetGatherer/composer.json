@@ -1,0 +1,32 @@
+{
+    "name": "constructionsincongrues/asset-gatherer",
+    "description": "A PHP package to gather assets based on HTTP request rules and configuration in YAML.",
+    "type": "library",
+    "require": {
+        "php": ">=7.4",
+        "symfony/yaml": "^5.0 || ^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AssetGatherer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AssetGatherer\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --bootstrap vendor/autoload.php tests"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tristan Rivoallan",
+            "email": "tristan@constructions-incongrues.net"
+        }
+    ]
+}
