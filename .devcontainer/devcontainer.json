@@ -1,0 +1,11 @@
+{
+    "name": "PHP Dev Container",
+    "build": {
+      "dockerfile": "Dockerfile",
+      "args": {
+        "VARIANT": "7.4" // Adjust PHP version as needed
+      }
+    },
+    "postCreateCommand": "cd AssetGatherer && composer install",
+    "remoteUser": "vscode"
+  }
