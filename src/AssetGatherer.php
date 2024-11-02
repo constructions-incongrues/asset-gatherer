@@ -2,6 +2,7 @@
 
 namespace AssetGatherer;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Yaml\Yaml;
 use Exception;
 
@@ -19,7 +20,7 @@ class AssetGatherer
         $this->bundles = Yaml::parseFile($yamlFilePath);
     }
 
-    public function gatherAssetsForRequest(array $request): void
+    public function gatherAssetsForRequest(ServerRequestInterface $request): void
     {
         foreach ($this->bundles as $bundleName => $config) {
             if ($this->bundleMatchesRequest($config['rules'] ?? [], $request)) {
@@ -38,25 +39,26 @@ class AssetGatherer
         }
     }
 
-    private function bundleMatchesRequest(array $rules, array $request): bool
+    private function bundleMatchesRequest(array $rules, ServerRequestInterface $request): bool
     {
         foreach ($rules as $ruleType => $ruleValue) {
             switch ($ruleType) {
                 case 'pathContains':
-                    if (strpos($request['path'] ?? '', $ruleValue) === false) {
+                    if (strpos($request->getUri()->getPath(), $ruleValue) === false) {
                         return false;
                     }
                     break;
                 case 'header':
                     foreach ($ruleValue as $headerKey => $headerValue) {
-                        if (($request['headers'][$headerKey] ?? '') !== $headerValue) {
+                        if ($request->getHeaderLine($headerKey) !== $headerValue) {
                             return false;
                         }
                     }
                     break;
                 case 'query':
+                    $queryParams = $request->getQueryParams();
                     foreach ($ruleValue as $queryKey => $queryValue) {
-                        if (($request['query'][$queryKey] ?? '') !== $queryValue) {
+                        if (($queryParams[$queryKey] ?? '') !== $queryValue) {
                             return false;
                         }
                     }
