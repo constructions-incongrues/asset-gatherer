@@ -74,7 +74,6 @@ class AssetGatherer
     {
         $directoryIterator = new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS);
         $iterator = new \RecursiveIteratorIterator($directoryIterator);
-
         foreach ($iterator as $file) {
             if (in_array($file->getExtension(), $extensions, true)) {
                 if (!isset($this->gatheredAssets[$bundleName][$type])) {
