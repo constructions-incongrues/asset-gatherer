@@ -17,4 +17,4 @@ jobs:
         settings_file: .github/settings.yml
         # need a PAT that can edit repo settings
         # note, some settings may require additional permissions; see comments in examples/settings.yml for details
-        token: ${{ secrets.GITHUB_PAT }}
+        token: ${{ secrets.PAT_REPO_MANAGER }}
