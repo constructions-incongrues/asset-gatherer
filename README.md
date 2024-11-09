@@ -53,6 +53,8 @@ dashboard:
   rules:
     query:
       admin: "true"
+      user:
+        regex: "/^user[0-9]+$/"
 ```
 
 ## Diagrammes C4

@@ -7,7 +7,6 @@ homepage:
     extensions: [css]
   rules:
     pathContains: /homepage
-
 dashboard:
   javascript:
     directories: [dashboard/js]
@@ -15,3 +14,5 @@ dashboard:
   rules:
     query:
       admin: true
+      user:
+        regex: /^user[0-9]+$/
