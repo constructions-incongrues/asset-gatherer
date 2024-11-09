@@ -66,8 +66,14 @@ class AssetGatherer
                 case 'query':
                     $queryParams = $request->getQueryParams();
                     foreach ($ruleValue as $queryKey => $queryValue) {
-                        if (($queryParams[$queryKey] ?? '') !== $queryValue) {
-                            return false;
+                        if (is_array($queryValue)) {
+                            if (!isset($queryParams[$queryKey]) || !preg_match($queryValue['regex'], $queryParams[$queryKey])) {
+                                return false;
+                            }
+                        } else {
+                            if (($queryParams[$queryKey] ?? '') !== $queryValue) {
+                                return false;
+                            }
                         }
                     }
                     break;
